@@ -1,4 +1,4 @@
-#include "myqueue.h"
+#include "myqueue.hpp"
 #include <stdlib.h>
 
 node_t *head = NULL;
@@ -6,7 +6,7 @@ node_t *tail = NULL;
 
 void enqueue(int *client_socket)
 {
-    node_t *newnode = malloc(sizeof(node_t));
+    node_t *newnode = (node_t *)malloc(sizeof(node_t));
     newnode->client_socket = client_socket;
     newnode->next = NULL;
     if (tail == NULL)
