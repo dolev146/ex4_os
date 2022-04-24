@@ -119,45 +119,6 @@ void *handle_connection(void *p_client_socket)
 {
     int client_socket = *((int *)p_client_socket);
     free(p_client_socket);
-    /*
-               m.lock();
-                if (strncmp(buf, "PUSH", 4) == 0)
-                {
-                    printf("from client : %s", buf);
-                    std::string str_buff = std::string(buf);
-                    my_stack.push(str_buff);
-                }
-                else if (strncmp(buf, "POP", 3) == 0)
-                {
-                    printf("from client : %s \n", buf);
-                    std::string output = my_stack.pop();
-                    strncpy(buf, output.c_str(), sizeof(output));
-                    send(new_fd, buf, sizeof(buf), 0);
-                }
-                else if (strncmp(buf, "TOP", 3) == 0)
-                {
-                    printf("from client : %s \n", buf);
-                    std::string output = my_stack.top();
-                    strncpy(buf, output.c_str(), sizeof(output));
-                    send(new_fd, buf, sizeof(buf), 0);
-                }
-                else if (strncmp(buf, "size", 4) == 0)
-                {
-                    printf("from client : %s \n", buf);
-                    int output = my_stack.getsize();
-                    bzero(buf, sizeof(buf));
-                    sprintf(buf, "%d", output);
-                    send(new_fd, buf, sizeof(buf), 0);
-                }
-                else if (strncmp(buf, "exit", 4) == 0 || strncmp(buf, "EXIT", 4) == 0)
-                {
-                    printf("closed fd : %d \n", new_fd);
-                    close(new_fd);
-                    m.unlock();
-                    return NULL;
-                }
-                m.unlock();
-    */
     pthread_mutex_lock(&mutex);
     if (recv(client_socket, client_message, sizeof(client_message), 0) == -1)
     {
