@@ -86,7 +86,7 @@ int main()
     while (i < 3)
     {
         pthread_join(tid[i++], NULL);
-        printf("thead enede number %d:\n", i);
+        printf("thead end number %d:\n", i);
     }
     return 0;
 }
