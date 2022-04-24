@@ -36,19 +36,23 @@ void *cientThread(void *arg)
     connect(clientSocket, (struct sockaddr *)&serverAddr, addr_size);
     strcpy(message, "PUSH a");
 
-
-    if (send(clientSocket, message, strlen(message), 0) < 0)
+    for (int i = 0; i < 1000; i++)
     {
-        printf("Send failed\n");
+        if (send(clientSocket, message, strlen(message), 0) < 0)
+        {
+            printf("Send failed\n");
+        }
     }
+    bzero(message, sizeof(message));
 
+    strcpy(message, "size");
     // Read the message from the server into the buffer
     if (recv(clientSocket, buffer, 1024, 0) < 0)
     {
         printf("Receive failed\n");
     }
     // Print the received message
-    printf("Data received: %s\n", buffer);
+    printf("Data received: size is %s\n", buffer);
     close(clientSocket);
     pthread_exit(NULL);
 }
