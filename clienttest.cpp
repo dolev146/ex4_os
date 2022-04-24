@@ -26,7 +26,7 @@ void *cientThread(void *arg)
     serverAddr.sin_family = AF_INET;
 
     // Set port number, using htons function
-    serverAddr.sin_port = htons(5007);
+    serverAddr.sin_port = htons(5008);
 
     // Set IP address to localhost
     serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
@@ -43,9 +43,9 @@ void *cientThread(void *arg)
         {
             printf("Send failed\n");
         }
-        usleep(5000);
+        usleep(5008);
     }
-    printf("finished pushing 100 a\n");
+    printf("finished pushing 100 \n");
     bzero(message, sizeof(message));
 
     strcpy(message, "size");
@@ -62,25 +62,31 @@ void *cientThread(void *arg)
     }
     // Print the received message
     printf("Data received: size is %s\n", buffer);
+    bzero(message, sizeof(message));
+    strcpy(message, "exit");
+    if (send(clientSocket, message, strlen(message), 0) < 0)
+    {
+        printf("Send failed\n");
+    }
     close(clientSocket);
     pthread_exit(NULL);
 }
 int main()
 {
     int i = 0;
-    pthread_t tid[51];
-    while (i < 50)
+    pthread_t tid[4];
+    while (i < 3)
     {
         if (pthread_create(&tid[i], NULL, cientThread, NULL) != 0)
             printf("Failed to create thread\n");
         i++;
     }
-    sleep(20);
+    sleep(5);
     i = 0;
-    while (i < 50)
+    while (i < 3)
     {
         pthread_join(tid[i++], NULL);
-        printf("%d:\n", i);
+        printf("thead enede number %d:\n", i);
     }
     return 0;
 }

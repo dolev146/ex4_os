@@ -11,7 +11,7 @@
 #include "mystack.hpp"
 #include <signal.h>
 
-#define SERVERPORT 5007
+#define SERVERPORT 5008
 #define BUFSIZE 1024
 #define SOCKETERROR (-1)
 #define SERVER_BACKLOG 100
@@ -23,6 +23,7 @@ typedef struct sockaddr_in SA_IN;
 typedef struct sockaddr SA;
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex2 = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t condition_var = PTHREAD_COND_INITIALIZER;
 
 char size_message[1024];
@@ -121,15 +122,17 @@ void *handle_connection(void *p_client_socket)
     int client_socket = *((int *)p_client_socket);
     free(p_client_socket);
     char client_message[1024];
+
     while (true)
     {
+        pthread_mutex_lock(&mutex2);
         bzero(client_message, sizeof(client_message));
-
         if (recv(client_socket, client_message, sizeof(client_message), 0) == -1)
         {
             perror("recv");
+            break;
         }
-        pthread_mutex_lock(&mutex);
+
         if (strncmp(client_message, "PUSH", 4) == 0)
         {
             // printf("DEBUG:from client : %s\n", client_message);
@@ -161,11 +164,11 @@ void *handle_connection(void *p_client_socket)
             sprintf(size_message, "%d", output);
             strncat(client_message, size_message, sizeof(size_message));
             send(client_socket, client_message, sizeof(client_message), 0);
-            pthread_mutex_unlock(&mutex);
         }
         else if (strncmp(client_message, "exit", 4) == 0)
         {
-            return NULL;
+            pthread_mutex_unlock(&mutex2);
+            break;
         }
 
         if (strncmp(client_message, "hello from ruby \n", 17) == 0) /* hello from ruby \n */
@@ -175,9 +178,10 @@ void *handle_connection(void *p_client_socket)
             send(client_socket, buffer_ruby_test, 1024, 0);
             bzero(buffer_ruby_test, sizeof(buffer_ruby_test));
             close(client_socket);
-            return NULL;
+            pthread_mutex_unlock(&mutex2);
+            break;
         }
-        pthread_mutex_unlock(&mutex);
+        pthread_mutex_unlock(&mutex2);
     }
 
     return NULL;
