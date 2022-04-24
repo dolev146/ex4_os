@@ -135,7 +135,7 @@ void *handle_connection(void *p_client_socket)
             // printf("DEBUG:from client : %s\n", client_message);
 
             push(client_message);
-            printf("DEBUG: push good! socket %d\n", client_socket);
+            // printf("DEBUG: push good! socket %d\n", client_socket);
         }
         else if (strncmp(client_message, "POP", 3) == 0)
         {

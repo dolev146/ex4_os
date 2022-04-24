@@ -37,13 +37,10 @@ void *cientThread(void *arg)
     connect(clientSocket, (struct sockaddr *)&serverAddr, addr_size);
     strcpy(message, "PUSH a");
 
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 1000; i++)
     {
-        if (send(clientSocket, message, strlen(message), 0) < 0)
-        {
-            printf("Send failed\n");
-        }
-        usleep(5008);
+        send(clientSocket, message, strlen(message), 0);
+        usleep(5000);
     }
     printf("finished pushing 100 \n");
     bzero(message, sizeof(message));
@@ -74,8 +71,8 @@ void *cientThread(void *arg)
 int main()
 {
     int i = 0;
-    pthread_t tid[4];
-    while (i < 3)
+    pthread_t tid[5];
+    while (i < 4)
     {
         if (pthread_create(&tid[i], NULL, cientThread, NULL) != 0)
             printf("Failed to create thread\n");
@@ -83,7 +80,7 @@ int main()
     }
     sleep(5);
     i = 0;
-    while (i < 3)
+    while (i < 4)
     {
         pthread_join(tid[i++], NULL);
         printf("thead end number %d:\n", i);
