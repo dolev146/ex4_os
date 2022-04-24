@@ -68,8 +68,8 @@ void *cientThread(void *arg)
 int main()
 {
     int i = 0;
-    pthread_t tid[2];
-    while (i < 2)
+    pthread_t tid[51];
+    while (i < 50)
     {
         if (pthread_create(&tid[i], NULL, cientThread, NULL) != 0)
             printf("Failed to create thread\n");
@@ -77,7 +77,7 @@ int main()
     }
     sleep(20);
     i = 0;
-    while (i < 2)
+    while (i < 50)
     {
         pthread_join(tid[i++], NULL);
         printf("%d:\n", i);

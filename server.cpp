@@ -25,7 +25,6 @@ typedef struct sockaddr SA;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t condition_var = PTHREAD_COND_INITIALIZER;
 
-char client_message[1024];
 char size_message[1024];
 int server_socket;
 void *handle_connection(void *p_client_socket);
@@ -121,10 +120,11 @@ void *handle_connection(void *p_client_socket)
 {
     int client_socket = *((int *)p_client_socket);
     free(p_client_socket);
-
+    char client_message[1024];
     while (true)
     {
         bzero(client_message, sizeof(client_message));
+
         if (recv(client_socket, client_message, sizeof(client_message), 0) == -1)
         {
             perror("recv");
