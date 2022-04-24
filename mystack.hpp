@@ -1,16 +1,19 @@
 #ifndef MYSTACK
 #define MYSTACK
-
+#include <pthread.h>
 struct node_stack
 {
     struct node_stack *next;
-    char* txt;
+    char *txt;
 };
 typedef struct node_stack node_stack_t;
 
-void push(char* str);
+extern pthread_mutex_t mutex;
+
+
+void push(char *str);
 void pop();
-char* top();
+char *top();
 int get_size();
 
 #endif // MYSTACK

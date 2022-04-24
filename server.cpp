@@ -11,7 +11,7 @@
 #include "mystack.hpp"
 #include <signal.h>
 
-#define SERVERPORT 5005
+#define SERVERPORT 5007
 #define BUFSIZE 1024
 #define SOCKETERROR (-1)
 #define SERVER_BACKLOG 100
@@ -34,6 +34,7 @@ void *thread_function(void *arg);
 
 void ctrlc_handler(int num)
 {
+
     close(server_socket);
     printf("server socket finish  %d", server_socket);
 }
@@ -100,6 +101,7 @@ void *thread_function(void *arg)
         if (pclient != NULL)
         {
             // we have a connection
+
             handle_connection(pclient);
         }
     }
@@ -119,43 +121,51 @@ void *handle_connection(void *p_client_socket)
 {
     int client_socket = *((int *)p_client_socket);
     free(p_client_socket);
+
     while (true)
     {
+        bzero(client_message, sizeof(client_message));
         if (recv(client_socket, client_message, sizeof(client_message), 0) == -1)
         {
             perror("recv");
         }
-
+        pthread_mutex_lock(&mutex);
         if (strncmp(client_message, "PUSH", 4) == 0)
         {
             // printf("DEBUG:from client : %s\n", client_message);
+
             push(client_message);
-            // printf("DEBUG: push good!\n");
+            printf("DEBUG: push good! socket %d\n", client_socket);
         }
         else if (strncmp(client_message, "POP", 3) == 0)
         {
-            printf("DEBUG: from client : %s \n", client_message);
+
+            // printf("DEBUG: from client : %s \n", client_message);
             pop();
-            printf("DEBUG: pop good!\n");
+            // printf("DEBUG: pop good!\n");
         }
         else if (strncmp(client_message, "TOP", 3) == 0)
         {
-            printf("DEBUG: from client : %s \n", client_message);
+            // printf("DEBUG: from client : %s \n", client_message);
             char *msg = top();
             send(client_socket, msg, sizeof(msg), 0);
             free(msg);
-            bzero(client_message, sizeof(client_message));
         }
         else if (strncmp(client_message, "size", 4) == 0)
         {
-            printf("DEBUG: IN SIZE: %s \n", client_message);
+            // printf("DEBUG: IN SIZE: %s \n", client_message);
+            printf("DEBUG: size call \n");
             int output = get_size();
             bzero(client_message, sizeof(client_message));
             strcat(client_message, "DEBUG:");
             sprintf(size_message, "%d", output);
             strncat(client_message, size_message, sizeof(size_message));
             send(client_socket, client_message, sizeof(client_message), 0);
-            bzero(client_message, sizeof(client_message));
+            pthread_mutex_unlock(&mutex);
+        }
+        else if (strncmp(client_message, "exit", 4) == 0)
+        {
+            return NULL;
         }
 
         if (strncmp(client_message, "hello from ruby \n", 17) == 0) /* hello from ruby \n */
@@ -167,8 +177,9 @@ void *handle_connection(void *p_client_socket)
             close(client_socket);
             return NULL;
         }
-      
+        pthread_mutex_unlock(&mutex);
     }
+
     return NULL;
     // Dzone
     // int newSocket = client_socket;

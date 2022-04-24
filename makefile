@@ -3,7 +3,10 @@ CFlags=-g -Wall
 BINS=server
 OBJS=server.o myqueue.o mystack.o
 
-all: $(BINS) clienttest
+all: $(BINS) clienttest client
+
+client: client.o
+	$(CC) $(CFlags) -o $@  $^ -lpthread
 
 clienttest: clienttest.o
 	$(CC) $(CFlags) -o $@  $^ -lpthread

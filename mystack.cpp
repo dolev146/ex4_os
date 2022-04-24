@@ -12,6 +12,7 @@ int size = 0;
 
 void push(char *str)
 {
+    // pthread_mutex_lock(&mutex);
     memcpy(str, str + 5, MAX_LIMIT - 5);
     node_stack_t *newnode = (node_stack_t *)malloc(sizeof(node_stack_t));
     // step 1. allocate memory to hold word
@@ -29,26 +30,32 @@ void push(char *str)
         head_stack = newnode;
     }
     size++;
+    // pthread_mutex_unlock(&mutex);
 }
 
 void pop()
 {
+    // pthread_mutex_lock(&mutex);
     node_stack_t *temp = head_stack;
     head_stack = head_stack->next;
     size--;
     free(temp);
+    // pthread_mutex_unlock(&mutex);
 }
 
 char *top()
 {
+    // pthread_mutex_lock(&mutex);
     char *msg = (char *)malloc(strlen(head_stack->txt) + 50);
     strcpy(msg, "OUTPUT:");
     strcat(msg, head_stack->txt);
     printf("%s", msg);
+    // pthread_mutex_unlock(&mutex);
     return msg;
 }
 
 int get_size()
 {
     return size;
+    
 }

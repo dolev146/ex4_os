@@ -2,7 +2,7 @@
 
 require 'socket'
 
-s = TCPSocket.new 'localhost', 5005
+s = TCPSocket.new 'localhost', 5007
 
 s.write("hello from ruby \n");
 
