@@ -11,7 +11,7 @@
 #include "mystack.hpp"
 #include <signal.h>
 
-#define SERVERPORT 5004
+#define SERVERPORT 5005
 #define BUFSIZE 1024
 #define SOCKETERROR (-1)
 #define SERVER_BACKLOG 100
@@ -119,53 +119,56 @@ void *handle_connection(void *p_client_socket)
 {
     int client_socket = *((int *)p_client_socket);
     free(p_client_socket);
-    pthread_mutex_lock(&mutex);
-    if (recv(client_socket, client_message, sizeof(client_message), 0) == -1)
+    while (true)
     {
-        perror("recv");
-    }
+        if (recv(client_socket, client_message, sizeof(client_message), 0) == -1)
+        {
+            perror("recv");
+        }
 
-    if (strncmp(client_message, "PUSH", 4) == 0)
-    {
-        printf("from client : %s", client_message);
-        push(client_message);
-        printf("push good!");
-    }
-    else if (strncmp(client_message, "POP", 3) == 0)
-    {
-        printf("from client : %s \n", client_message);
-        pop();
-        printf("pop good!");
-    }
-    else if (strncmp(client_message, "TOP", 3) == 0)
-    {
-        printf("from client : %s \n", client_message);
-        char *msg = top();
-        send(client_socket, msg, sizeof(msg), 0);
-        free(msg);
-        bzero(client_message, sizeof(client_message));
-    }
-    else if (strncmp(client_message, "size", 4) == 0)
-    {
-        printf("from client : %s \n", client_message);
-        int output = get_size();
-        bzero(client_message, sizeof(client_message));
-        strcat(client_message, "DEBUG:");
-        sprintf(size_message, "%d", output);
-        strncat(client_message, size_message, sizeof(size_message));
-        send(client_socket, client_message, sizeof(client_message), 0);
-        bzero(client_message, sizeof(client_message));
-    }
-    pthread_mutex_unlock(&mutex);
+        if (strncmp(client_message, "PUSH", 4) == 0)
+        {
+            // printf("DEBUG:from client : %s\n", client_message);
+            push(client_message);
+            // printf("DEBUG: push good!\n");
+        }
+        else if (strncmp(client_message, "POP", 3) == 0)
+        {
+            printf("DEBUG: from client : %s \n", client_message);
+            pop();
+            printf("DEBUG: pop good!\n");
+        }
+        else if (strncmp(client_message, "TOP", 3) == 0)
+        {
+            printf("DEBUG: from client : %s \n", client_message);
+            char *msg = top();
+            send(client_socket, msg, sizeof(msg), 0);
+            free(msg);
+            bzero(client_message, sizeof(client_message));
+        }
+        else if (strncmp(client_message, "size", 4) == 0)
+        {
+            printf("DEBUG: IN SIZE: %s \n", client_message);
+            int output = get_size();
+            bzero(client_message, sizeof(client_message));
+            strcat(client_message, "DEBUG:");
+            sprintf(size_message, "%d", output);
+            strncat(client_message, size_message, sizeof(size_message));
+            send(client_socket, client_message, sizeof(client_message), 0);
+            bzero(client_message, sizeof(client_message));
+        }
 
-    if (strncmp(client_message, "hello from ruby \n", 17) == 0) /* hello from ruby \n */
-    {
-        char buffer_ruby_test[BUFSIZE] = "hi from server ";
-        printf("%s", client_message);
-        send(client_socket, buffer_ruby_test, 1024, 0);
-        close(client_socket);
+        if (strncmp(client_message, "hello from ruby \n", 17) == 0) /* hello from ruby \n */
+        {
+            char buffer_ruby_test[BUFSIZE] = "hi from server ";
+            printf("%s", client_message);
+            send(client_socket, buffer_ruby_test, 1024, 0);
+            bzero(buffer_ruby_test, sizeof(buffer_ruby_test));
+            close(client_socket);
+            return NULL;
+        }
+      
     }
-
     return NULL;
     // Dzone
     // int newSocket = client_socket;
