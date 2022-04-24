@@ -23,7 +23,7 @@ typedef struct sockaddr_in SA_IN;
 typedef struct sockaddr SA;
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t mutex2 = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t stack_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t condition_var = PTHREAD_COND_INITIALIZER;
 
 char size_message[1024];
@@ -125,13 +125,10 @@ void *handle_connection(void *p_client_socket)
 
     while (true)
     {
-        pthread_mutex_lock(&mutex2);
+
         bzero(client_message, sizeof(client_message));
-        if (recv(client_socket, client_message, sizeof(client_message), 0) == -1)
-        {
-            perror("recv");
-            break;
-        }
+        recv(client_socket, client_message, sizeof(client_message), 0);
+        pthread_mutex_lock(&stack_mutex);
 
         if (strncmp(client_message, "PUSH", 4) == 0)
         {
@@ -167,8 +164,8 @@ void *handle_connection(void *p_client_socket)
         }
         else if (strncmp(client_message, "exit", 4) == 0)
         {
-            pthread_mutex_unlock(&mutex2);
-            break;
+            pthread_mutex_unlock(&stack_mutex);
+            return NULL;
         }
 
         if (strncmp(client_message, "hello from ruby \n", 17) == 0) /* hello from ruby \n */
@@ -178,12 +175,12 @@ void *handle_connection(void *p_client_socket)
             send(client_socket, buffer_ruby_test, 1024, 0);
             bzero(buffer_ruby_test, sizeof(buffer_ruby_test));
             close(client_socket);
-            pthread_mutex_unlock(&mutex2);
-            break;
+            pthread_mutex_unlock(&stack_mutex);
+            return NULL;
         }
-        pthread_mutex_unlock(&mutex2);
+        pthread_mutex_unlock(&stack_mutex);
     }
-
+    
     return NULL;
     // Dzone
     // int newSocket = client_socket;
