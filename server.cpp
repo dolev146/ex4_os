@@ -179,30 +179,6 @@ void *handle_connection(void *p_client_socket)
             return NULL;
         }
         pthread_mutex_unlock(&stack_mutex);
-    }
-    
-    return NULL;
-    // Dzone
-    // int newSocket = client_socket;
-    // recv(newSocket, client_message, 1024, 0);
-
-    // printf("%s", client_message);
-    // char *firstcli = &client_message[0];
-
-    // // Send message to the client socket
-
-    // // pthread_mutex_lock(&lock);
-    // char *message = malloc(sizeof(client_message) + 20);
-    // strcpy(message, "Hello Client : ");
-    // strcat(message, firstcli);
-    // strcat(message, "\n");
-    // strcpy(buffer, message);
-    // free(message);
-    // // pthread_mutex_unlock(&lock);
-    // sleep(1);
-    // send(newSocket, buffer, 1000, 0);
-    // printf("Exit socket number %d \n", newSocket);
-    // close(newSocket);
-    // pthread_exit(NULL);
-    // Dzone
+    }    
+    return NULL;    
 }
