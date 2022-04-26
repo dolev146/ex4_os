@@ -12,6 +12,7 @@ int size = 0;
 void push(char *str)
 {
     memcpy(str, str + 5, MAX_LIMIT - 5);
+    
     node_stack_t *newnode = (node_stack_t *)malloc(sizeof(node_stack_t));
     // step 1. allocate memory to hold word
     newnode->txt = (char *)malloc(strlen(str) + 1);
