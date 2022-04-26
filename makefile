@@ -19,4 +19,4 @@ server: $(OBJS)
 	$(CC) $(CFlags) -c -o $@  $^ -lpthread
 
 clean:
-	rm -f *.dSYM $(BINS) *.o
+	rm -f *.dSYM $(BINS) *.o client clienttest

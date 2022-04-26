@@ -2,6 +2,10 @@
 #define MYSTACK
 #include <pthread.h>
 #include <unistd.h>
+
+void *my_malloc(int size);
+void *my_free(int size);
+
 struct node_stack
 {
     struct node_stack *next;

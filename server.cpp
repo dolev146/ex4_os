@@ -72,7 +72,7 @@ int main(int argc, char **argv)
         printf("connected! on socket %d \n", client_socket);
 
         // do whatever we do with connections.
-        int *pclient = (int *)malloc(sizeof(int));
+        int *pclient = (int *)my_malloc(sizeof(int));
         *pclient = client_socket;
         pthread_mutex_lock(&mutex);
         enqueue(pclient);
@@ -120,7 +120,7 @@ int check(int exp, const char *msg)
 void *handle_connection(void *p_client_socket)
 {
     int client_socket = *((int *)p_client_socket);
-    free(p_client_socket);
+    my_free(sizeof(int));
     char client_message[1024];
 
     while (true)
@@ -149,7 +149,7 @@ void *handle_connection(void *p_client_socket)
             // printf("DEBUG: from client : %s \n", client_message);
             char *msg = top();
             send(client_socket, msg, sizeof(msg), 0);
-            free(msg);
+            my_free(sizeof(msg));
         }
         else if (strncmp(client_message, "size", 4) == 0)
         {
@@ -179,6 +179,6 @@ void *handle_connection(void *p_client_socket)
             return NULL;
         }
         pthread_mutex_unlock(&stack_mutex);
-    }    
-    return NULL;    
+    }
+    return NULL;
 }

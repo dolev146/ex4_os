@@ -2,3 +2,4 @@ server
 *.o
 clienttest
 client
+.vscode/settings.json
