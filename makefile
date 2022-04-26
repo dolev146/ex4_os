@@ -1,7 +1,7 @@
 CC=g++
 CFlags=-g -Wall
 BINS=server
-OBJS=server.o myqueue.o mystack.o
+OBJS=server.o myqueue.o mystack.o mymemory.o
 
 all: $(BINS) clienttest client
 

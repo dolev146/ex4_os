@@ -3,7 +3,7 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <arpa/inet.h>
-#include <stdlib.h>
+// #include <stdlib.h>
 #include <fcntl.h>  // for open
 #include <unistd.h> // for close
 #include <pthread.h>
@@ -70,7 +70,7 @@ int main()
     while (i < 4)
     {
         pthread_join(tid[i++], NULL);
-        printf("thead end number %d:\n", i);
+        printf("thread end number %d:\n", i);
     }
 
     printf("Out in main thread\n");

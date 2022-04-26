@@ -1,13 +1,14 @@
 #include "myqueue.hpp"
 #include "mystack.hpp"
-#include <stdlib.h>
+#include "mymemory.hpp"
+// #include <stdlib.h>
 
 node_t *head = NULL;
 node_t *tail = NULL;
 
 void enqueue(int *client_socket)
 {
-    node_t *newnode = (node_t *)my_malloc(sizeof(node_t));
+    node_t *newnode = (node_t *)malloc(sizeof(node_t));
     newnode->client_socket = client_socket;
     newnode->next = NULL;
     if (tail == NULL)
@@ -37,7 +38,7 @@ int *dequeue()
         {
             tail = NULL;
         }
-        my_free(sizeof(node_t));
+        free(temp);
         return result;
     }
 }

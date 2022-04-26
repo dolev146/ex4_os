@@ -1,6 +1,6 @@
 #include <netdb.h>
 #include <stdio.h>
-#include <stdlib.h>
+// #include <stdlib.h>
 #include "unistd.h"
 #include <string.h>
 #include <sys/socket.h>
@@ -70,7 +70,7 @@ int main()
     if (sockfd == -1)
     {
         printf("socket creation failed...\n");
-        exit(0);
+        return 1;
     }
     else
         printf("Socket successfully created..\n");
@@ -85,7 +85,7 @@ int main()
     if (connect(sockfd, (SA *)&servaddr, sizeof(servaddr)) != 0)
     {
         printf("connection with the server failed...\n");
-        exit(0);
+        return 1;
     }
     else
         printf("connected to the server..\n");

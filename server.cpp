@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>
+// #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/socket.h>
@@ -9,6 +9,7 @@
 #include <pthread.h>
 #include "myqueue.hpp"
 #include "mystack.hpp"
+#include "mymemory.hpp"
 #include <signal.h>
 
 #define SERVERPORT 5008
@@ -72,7 +73,7 @@ int main(int argc, char **argv)
         printf("connected! on socket %d \n", client_socket);
 
         // do whatever we do with connections.
-        int *pclient = (int *)my_malloc(sizeof(int));
+        int *pclient = (int *)malloc(sizeof(int));
         *pclient = client_socket;
         pthread_mutex_lock(&mutex);
         enqueue(pclient);
@@ -112,7 +113,7 @@ int check(int exp, const char *msg)
     if (exp == SOCKETERROR)
     {
         perror(msg);
-        exit(1);
+        return 1;
     }
     return exp;
 }
@@ -120,7 +121,7 @@ int check(int exp, const char *msg)
 void *handle_connection(void *p_client_socket)
 {
     int client_socket = *((int *)p_client_socket);
-    my_free(sizeof(int));
+    free(p_client_socket);
     char client_message[1024];
 
     while (true)
@@ -149,7 +150,7 @@ void *handle_connection(void *p_client_socket)
             // printf("DEBUG: from client : %s \n", client_message);
             char *msg = top();
             send(client_socket, msg, sizeof(msg), 0);
-            my_free(sizeof(msg));
+            free(msg);
         }
         else if (strncmp(client_message, "size", 4) == 0)
         {
