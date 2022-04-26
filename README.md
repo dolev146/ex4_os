@@ -20,7 +20,7 @@ we are using a thread pool that always check if the queue is empty if it doesn't
 * we also had to implement malloc and free with sbrk(2)
 
  
- [![IMAGE ALT TEXT HERE](https://user-images.githubusercontent.com/62290677/165375827-de78d043-8283-4028-9bac-c79f73192469.png)](https://www.youtube.com/watch?v=uKM5gwQ0zEE)
+![IMAGE ALT TEXT HERE](https://user-images.githubusercontent.com/62290677/165375827-de78d043-8283-4028-9bac-c79f73192469.png)](https://www.youtube.com/watch?v=uKM5gwQ0zEE)
 
 ## Run Locally
 
