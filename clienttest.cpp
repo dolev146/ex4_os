@@ -7,6 +7,7 @@
 #include <fcntl.h>  // for open
 #include <unistd.h> // for close
 #include <pthread.h>
+#include <assert.h>
 
 void *cientThread(void *arg)
 {
@@ -113,6 +114,20 @@ int main()
     }
     // Print the received message
     printf("Data received: size is %s\n", buffer);
+    assert(buffer[6] == '4');
+    assert(buffer[7] == '0');
+    assert(buffer[8] == '0');
+    assert(buffer[9] == '0');
+
+    bzero(message, sizeof(message));
+    strcpy(message, "exit");
+    printf("%s\n", message);
+
+    if (send(clientSocket, message, strlen(message), 0) < 0)
+    {
+        printf("Send failed\n");
+    }
+
     close(clientSocket);
 
     return 0;

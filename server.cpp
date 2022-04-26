@@ -11,12 +11,15 @@
 #include "mystack.hpp"
 #include "mymemory.hpp"
 #include <signal.h>
+#define MAX_LIMIT 1024
 
 #define SERVERPORT 5008
 #define BUFSIZE 1024
 #define SOCKETERROR (-1)
 #define SERVER_BACKLOG 100
 #define THREAD_POOL_SIZE 20
+
+int counter = 4000;
 
 pthread_t thread_pool[THREAD_POOL_SIZE];
 
@@ -134,7 +137,7 @@ void *handle_connection(void *p_client_socket)
         if (strncmp(client_message, "PUSH", 4) == 0)
         {
             // printf("DEBUG:from client : %s\n", client_message);
-
+            memcpy(client_message, client_message + 5, MAX_LIMIT - 5);
             push(client_message);
             // printf("DEBUG: push good! socket %d\n", client_socket);
         }

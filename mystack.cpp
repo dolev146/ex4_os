@@ -3,7 +3,7 @@
 // #include <stdlib.h>
 #include <string.h>
 #include "mymemory.hpp"
-#define MAX_LIMIT 1024
+
 
 // https://stackoverflow.com/questions/56606496/how-to-add-a-string-to-linked-list-in-c
 
@@ -12,7 +12,7 @@ int size = 0;
 
 void push(char *str)
 {
-    memcpy(str, str + 5, MAX_LIMIT - 5);
+    
     node_stack_t *newnode = (node_stack_t *)malloc(sizeof(node_stack_t));
     // step 1. allocate memory to hold word
     newnode->txt = (char *)malloc(strlen(str) + 1);
@@ -36,6 +36,7 @@ void pop()
     node_stack_t *temp = head_stack;
     head_stack = head_stack->next;
     size--;
+    free(temp->txt);
     free(temp);
 }
 
