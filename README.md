@@ -71,6 +71,9 @@ and in a diffrent terminal run
 ```bash
   bash ./manyclients.bash
 ```
+ ![image](https://user-images.githubusercontent.com/62290677/165369732-ab2a21db-b3b7-4a93-9ca0-4d430fc942f3.png)
+
+ 
 
 this is testing makeing 150! connections that sending messages and reciving mesesges from the server
 
@@ -90,6 +93,9 @@ and in a diffrent terminal run
 ```bash
   ./clienttest
 ```
+ 
+ ![image](https://user-images.githubusercontent.com/62290677/165369565-c343dc24-b4be-4688-8811-62f95d9dc1cd.png)
+
 
 you will see that the size of the stack will be 4000 
 if you comment out the lines that use stack_mutex then you will get a smaller number as an affect of not handling correncty about multi-thread
@@ -102,6 +108,10 @@ so in order to test our malloc implementation we used a diffrent repository
 https://github.com/dolev146/malloc_free_implementation
 
 open it and follow the instruction , we check that no bytes are lost with valgrind
+ 
+ 
+ ![image](https://user-images.githubusercontent.com/62290677/165367469-bcc1290f-8205-4904-bc53-0431cdbc6162.png)
+ 
 
 
 
