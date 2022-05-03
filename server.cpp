@@ -152,7 +152,7 @@ void *handle_connection(void *p_client_socket)
         {
             // printf("DEBUG: from client : %s \n", client_message);
             char *msg = top();
-            send(client_socket, msg, sizeof(msg), 0);
+            send(client_socket, msg, 1024, 0);
             free(msg);
         }
         else if (strncmp(client_message, "size", 4) == 0)
