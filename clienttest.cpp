@@ -11,7 +11,7 @@
 
 void *cientThread(void *arg)
 {
-    printf("In thread\n");
+    printf("DEBUG:In thread\n");
     char message[1000];
 
     char buffer[1024];
@@ -43,7 +43,7 @@ void *cientThread(void *arg)
         send(clientSocket, message, strlen(message), 0);
         usleep(5000);
     }
-    printf("finished pushing 100 \n");
+    printf("DEBUG:finished pushing 100 \n");
     bzero(message, sizeof(message));
 
     bzero(message, sizeof(message));
@@ -71,10 +71,10 @@ int main()
     while (i < 4)
     {
         pthread_join(tid[i++], NULL);
-        printf("thread end number %d:\n", i);
+        printf("DEBUG:thread end number %d:\n", i);
     }
 
-    printf("Out in main thread\n");
+    printf("DEBUG:Out in main thread\n");
     char message[1000];
 
     char buffer[1024];
@@ -101,11 +101,11 @@ int main()
     connect(clientSocket, (struct sockaddr *)&serverAddr, addr_size);
 
     strcpy(message, "size");
-    printf("%s\n", message);
+    printf("DEBUG: asking for size %s\n", message);
 
     if (send(clientSocket, message, strlen(message), 0) < 0)
     {
-        printf("Send failed\n");
+        printf("DEBUG:Send failed\n");
     }
     // Read the message from the server into the buffer if (recv(clientSocket, buffer, 1024, 0) < 0)
     if (recv(clientSocket, buffer, 1024, 0) < 0)
@@ -113,7 +113,7 @@ int main()
         printf("Receive failed\n");
     }
     // Print the received message
-    printf("Data received: size is %s\n", buffer);
+    printf("DEBUG:Data received: size is %s\n", buffer);
     assert(buffer[6] == '4');
     assert(buffer[7] == '0');
     assert(buffer[8] == '0');
@@ -121,7 +121,7 @@ int main()
 
     bzero(message, sizeof(message));
     strcpy(message, "exit");
-    printf("%s\n", message);
+    printf("DEBUG:%s\n", message);
 
     if (send(clientSocket, message, strlen(message), 0) < 0)
     {

@@ -40,7 +40,7 @@ void ctrlc_handler(int num)
 {
 
     close(server_socket);
-    printf("server socket finish  %d", server_socket);
+    printf("DEBUG:server socket finish  %d", server_socket);
 }
 
 int main(int argc, char **argv)
@@ -68,12 +68,12 @@ int main(int argc, char **argv)
 
     while (true)
     {
-        printf("Waiting for connections... \n");
+        printf("DEBUG:Waiting for connections... \n");
         // wait for and eventually accept an incomming connection
 
         addr_size = sizeof(SA_IN);
         check(client_socket = accept(server_socket, (SA *)&client_addr, (socklen_t *)&addr_size), "accept failed");
-        printf("connected! on socket %d \n", client_socket);
+        printf("DEBUG:connected! on socket %d \n", client_socket);
 
         // do whatever we do with connections.
         int *pclient = (int *)malloc(sizeof(int));
@@ -84,7 +84,7 @@ int main(int argc, char **argv)
         pthread_mutex_unlock(&mutex);
     }
     close(server_socket);
-    printf("server socket finish  %d", server_socket);
+    printf("DEBUG:server socket finish  %d", server_socket);
 }
 
 void *thread_function(void *arg)
@@ -145,15 +145,32 @@ void *handle_connection(void *p_client_socket)
         {
 
             // printf("DEBUG: from client : %s \n", client_message);
-            pop();
+            if (get_size() == 0)
+            {
+                // strcpy(client_message, "EMPTY");
+                // send(client_socket, client_message, 1024, 0);
+            }
+            else
+            {
+                pop();
+            }
+
             // printf("DEBUG: pop good!\n");
         }
         else if (strncmp(client_message, "TOP", 3) == 0)
         {
             // printf("DEBUG: from client : %s \n", client_message);
-            char *msg = top();
-            send(client_socket, msg, 1024, 0);
-            free(msg);
+            if (get_size() == 0)
+            {
+                strcpy(client_message, "OUTPUT:EMPTY");
+                send(client_socket, client_message, 1024, 0);
+            }
+            else
+            {
+                char *msg = top();
+                send(client_socket, msg, 1024, 0);
+                free(msg);
+            }
         }
         else if (strncmp(client_message, "size", 4) == 0)
         {

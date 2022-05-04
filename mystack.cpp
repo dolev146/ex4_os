@@ -33,6 +33,11 @@ void push(char *str)
 
 void pop()
 {
+    if (head_stack == NULL)
+    {
+        printf("DEBUG:Stack is empty\n");
+        return;
+    }
     node_stack_t *temp = head_stack;
     head_stack = head_stack->next;
     size--;
@@ -42,6 +47,10 @@ void pop()
 
 char *top()
 {
+    if (head_stack == NULL)
+    {
+        return NULL;
+    }
     char *msg = (char *)malloc(strlen(head_stack->txt) + 50);
     strcpy(msg, "OUTPUT:");
     strcat(msg, head_stack->txt);

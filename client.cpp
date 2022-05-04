@@ -17,7 +17,7 @@ void func(int sockfd)
     for (;;)
     {
         bzero(buff, sizeof(buff));
-        printf("Enter the string : ");
+        printf("DEBUG:Enter the string : ");
         n = 0;
         while ((buff[n++] = getchar()) != '\n')
             ;
@@ -41,12 +41,12 @@ void func(int sockfd)
         {
             write(sockfd, buff, sizeof(buff));
             read(sockfd, buff, sizeof(buff));
-            printf("%s\n", buff);
+            printf("DEBUG:%s\n", buff);
         }
         if ((strncmp(buff, "exit", 4)) == 0 || (strncmp(buff, "EXIT", 4)) == 0)
         {
             write(sockfd, buff, sizeof(buff));
-            printf("Client Exit...\n");
+            printf("DEBUG:Client Exit...\n");
             break;
         }
         // bzero(buff, sizeof(buff));
@@ -69,11 +69,11 @@ int main()
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd == -1)
     {
-        printf("socket creation failed...\n");
+        printf("DEBUG:socket creation failed...\n");
         return 1;
     }
     else
-        printf("Socket successfully created..\n");
+        printf("DEBUG:Socket successfully created..\n");
     bzero(&servaddr, sizeof(servaddr));
 
     // assign IP, PORT
@@ -84,11 +84,11 @@ int main()
     // connect the client socket to server socket
     if (connect(sockfd, (SA *)&servaddr, sizeof(servaddr)) != 0)
     {
-        printf("connection with the server failed...\n");
+        printf("DEBUG:connection with the server failed...\n");
         return 1;
     }
     else
-        printf("connected to the server..\n");
+        printf("DEBUG:connected to the server..\n");
 
     // function for chat
     func(sockfd);
