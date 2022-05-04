@@ -133,6 +133,9 @@ https://github.com/dolev146/JACOB-SORBER-multithreaded-server-all-parts
 
 * https://www.youtube.com/watch?v=P6Z5K8zmEmc&t=17s&ab_channel=JacobSorber
 
+ 
+ ![image](https://user-images.githubusercontent.com/62290677/166649821-23721992-fde4-4154-a186-3f2128c0425c.png)
+
 
 # malloc implemnetation
 
