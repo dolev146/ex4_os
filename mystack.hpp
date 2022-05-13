@@ -8,9 +8,9 @@ struct node_stack
     struct node_stack *next;
     char *txt;
 };
-typedef struct node_stack node_stack_t;
+typedef struct node_stack node_stack_t; // define a node_stack_t
 
-extern pthread_mutex_t mutex;
+extern pthread_mutex_t mutex; // mutex for thread safety
 
 void push(char *str);
 void pop();

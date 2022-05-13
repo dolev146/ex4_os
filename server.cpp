@@ -19,20 +19,18 @@
 #define SERVER_BACKLOG 100
 #define THREAD_POOL_SIZE 20
 
-int counter = 4000;
-
 pthread_t thread_pool[THREAD_POOL_SIZE];
 
-typedef struct sockaddr_in SA_IN;
-typedef struct sockaddr SA;
+typedef struct sockaddr_in SA_IN; // define a sockaddr_in
+typedef struct sockaddr SA; // define a sockaddr
 
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t stack_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t condition_var = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // mutex for thread safety
+pthread_mutex_t stack_mutex = PTHREAD_MUTEX_INITIALIZER; // mutex for thread safety
+pthread_cond_t condition_var = PTHREAD_COND_INITIALIZER; // condition variable for thread safety
 
 char size_message[1024];
-int server_socket;
-void *handle_connection(void *p_client_socket);
+int server_socket; // server socket
+void *handle_connection(void *p_client_socket); // function pointer for thread
 int check(int exp, const char *msg);
 void *thread_function(void *arg);
 
@@ -47,8 +45,8 @@ int main(int argc, char **argv)
 {
     signal(SIGINT, ctrlc_handler);
 
-    int client_socket, addr_size;
-    SA_IN server_addr, client_addr;
+    int client_socket, addr_size; // client socket and address size
+    SA_IN server_addr, client_addr; // server address and client address
 
     // first off we create a bunch of threads
     for (int i = 0; i < THREAD_POOL_SIZE; i++)
@@ -56,15 +54,15 @@ int main(int argc, char **argv)
         pthread_create(&thread_pool[i], NULL, thread_function, NULL);
     }
 
-    check((server_socket = socket(AF_INET, SOCK_STREAM, 0)), "Failed to craete socket");
+    check((server_socket = socket(AF_INET, SOCK_STREAM, 0)), "Failed to create socket");
 
     // initialize the adress struct
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_addr.s_addr = INADDR_ANY;
-    server_addr.sin_port = htons(SERVERPORT);
+    server_addr.sin_family = AF_INET; // ipv4
+    server_addr.sin_addr.s_addr = INADDR_ANY; // any address
+    server_addr.sin_port = htons(SERVERPORT); // port
 
-    check(bind(server_socket, (SA *)&server_addr, sizeof(server_addr)), "Bind Failed!");
-    check(listen(server_socket, SERVER_BACKLOG), "Listen Failed!");
+    check(bind(server_socket, (SA *)&server_addr, sizeof(server_addr)), "Bind Failed!"); // bind the socket to the address
+    check(listen(server_socket, SERVER_BACKLOG), "Listen Failed!"); // listen for connections
 
     while (true)
     {
@@ -78,9 +76,9 @@ int main(int argc, char **argv)
         // do whatever we do with connections.
         int *pclient = (int *)malloc(sizeof(int));
         *pclient = client_socket;
-        pthread_mutex_lock(&mutex);
-        enqueue(pclient);
-        pthread_cond_signal(&condition_var);
+        pthread_mutex_lock(&mutex); //  lock the mutex
+        enqueue(pclient); // enqueue the client socket
+        pthread_cond_signal(&condition_var); // signal the condition variable
         pthread_mutex_unlock(&mutex);
     }
     close(server_socket);
@@ -130,8 +128,8 @@ void *handle_connection(void *p_client_socket)
     while (true)
     {
 
-        bzero(client_message, sizeof(client_message));
-        recv(client_socket, client_message, sizeof(client_message), 0);
+        bzero(client_message, sizeof(client_message)); // clear the buffer
+        recv(client_socket, client_message, sizeof(client_message), 0); // receive the message
         pthread_mutex_lock(&stack_mutex);
 
         if (strncmp(client_message, "PUSH", 4) == 0)

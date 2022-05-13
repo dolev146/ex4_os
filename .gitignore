@@ -3,3 +3,6 @@ server
 clienttest
 client
 .vscode/settings.json
+.vscode/targets.log
+.vscode/configurationCache.log
+.vscode/dryrun.log

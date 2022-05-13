@@ -31,7 +31,7 @@ int *dequeue()
     }
     else
     {
-        int *result = head->client_socket;
+        int *result = head->client_socket; // return the pointer to a client_socket
         node_t *temp = head;
         head = head->next;
         if (head == NULL)

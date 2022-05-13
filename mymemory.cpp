@@ -276,7 +276,7 @@ struct m_block
   struct m_block *next;
 };
 
-m_block mem_list;
+m_block mem_list; // head of the list
 
 void split_block(m_block *prev, size_t size)
 {
@@ -303,14 +303,14 @@ m_block *extend_heap(m_block *prev, size_t size)
   void *p, *n;
   m_block *curr;
 
-  p = sbrk(0);
+  p = sbrk(0); // get current breakpoint
   // if sbreak fails return null
   if (sbrk(size) == (void *)-1)
     return NULL;
-  n = sbrk(0);
+  n = sbrk(0); // get the new breakpoint
 
   curr = (m_block *)p;
-  curr->size = (char *)n - (char *)p;
+  curr->size = (char *)n - (char *)p; // set size of new block
   prev->next = curr;
 
   return curr;
@@ -318,18 +318,18 @@ m_block *extend_heap(m_block *prev, size_t size)
 
 void *malloc(size_t size)
 {
-  size_t size_al = ALIGN(size);
-  m_block *prev, *curr;
+  size_t size_al = ALIGN(size); // align to 4 bytes
+  m_block *prev, *curr; // previous and current block
 
-  size_al = MIN_ALLOC(size_al);
+  size_al = MIN_ALLOC(size_al); // minimum allocation size
 
-  prev = &mem_list;
-  curr = mem_list.next;
+  prev = &mem_list; // start at head of list
+  curr = mem_list.next; // start at next block
   while (curr)
   {
     if (curr->size >= size_al)
     {
-      split_block(prev, size_al);
+      split_block(prev, size_al); // split block if necessary
       break;
     }
 
@@ -339,7 +339,7 @@ void *malloc(size_t size)
 
   if (!curr)
   {
-    curr = extend_heap(prev, size_al);
+    curr = extend_heap(prev, size_al); // extend heap 
     if (!curr)
       return NULL;
     split_block(prev, size_al);
@@ -361,7 +361,7 @@ void free(void *ptr)
   if (ptr == NULL)
     return;
 
-  m_block *blk = (m_block *)((char *)ptr - sizeof(size_t));
+  m_block *blk = (m_block *)((char *)ptr - sizeof(size_t)); 
   m_block *prev, *next;
   size_t top;
 
@@ -399,7 +399,7 @@ void free(void *ptr)
   if ((size_t)blk + blk->size == (size_t)next)
   {
     /* Coalesce with next block */
-    blk->size += next->size;
-    blk->next = next->next;
+    blk->size += next->size; // add size of next block
+    blk->next = next->next; // remove next block
   }
 }

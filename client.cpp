@@ -16,13 +16,13 @@ void func(int sockfd)
     int n;
     for (;;)
     {
-        bzero(buff, sizeof(buff));
-        printf("DEBUG:Enter the string : ");
+        bzero(buff, sizeof(buff)); // clear buffer
+        printf("DEBUG:Enter the string : "); // print prompt
         n = 0;
         while ((buff[n++] = getchar()) != '\n')
             ;
-        if (strncmp(buff, "PUSH", 4) == 0)
-        {
+        if (strncmp(buff, "PUSH", 4) == 0) 
+        { // if string is PUSH then send PUSH message
             write(sockfd, buff, sizeof(buff));
         }
         else if (strncmp(buff, "POP", 3) == 0)
@@ -37,7 +37,7 @@ void func(int sockfd)
             read(sockfd, buff, sizeof(buff));
             printf("%s\n", buff);
         }
-        else if (strncmp(buff, "size", 3) == 0)
+        else if (strncmp(buff, "size", 4) == 0)
         {
             write(sockfd, buff, sizeof(buff));
             read(sockfd, buff, sizeof(buff));
@@ -62,22 +62,22 @@ void func(int sockfd)
 
 int main()
 {
-    int sockfd;
-    struct sockaddr_in servaddr;
+    int sockfd; // socket descriptor
+    struct sockaddr_in servaddr; // server address
 
     // socket create and verification
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    sockfd = socket(AF_INET, SOCK_STREAM, 0); // create socket
     if (sockfd == -1)
     {
-        printf("DEBUG:socket creation failed...\n");
+        printf("DEBUG:socket creation failed...\n"); 
         return 1;
     }
     else
         printf("DEBUG:Socket successfully created..\n");
-    bzero(&servaddr, sizeof(servaddr));
+    bzero(&servaddr, sizeof(servaddr)); // clear server address
 
     // assign IP, PORT
-    servaddr.sin_family = AF_INET;
+    servaddr.sin_family = AF_INET; // IPv4
     servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
     servaddr.sin_port = htons(PORT);
 
