@@ -138,8 +138,9 @@ https://github.com/dolev146/JACOB-SORBER-multithreaded-server-all-parts
 
 
 # malloc implemnetation
-
+https://danluu.com/malloc-tutorial/
 https://github.com/chaitanyamehta/custom-malloc.git
+ 
  
 # client and server multithread used the clinet 
  
