@@ -3,7 +3,10 @@ CFlags=-g -Wall
 BINS=server
 OBJS=server.o myqueue.o mystack.o mymemory.o
 
-all: $(BINS) clienttest client
+all: $(BINS) clienttest client forktest
+
+forktest: forktest.o
+	$(CC) $(CFlags) forktest.o -o forktest
 
 client: client.o
 	$(CC) $(CFlags) -o $@  $^ -lpthread
