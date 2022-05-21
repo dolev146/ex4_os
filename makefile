@@ -22,4 +22,4 @@ server: $(OBJS)
 	$(CC) $(CFlags) -c -o $@  $^ -lpthread
 
 clean:
-	rm -f *.dSYM $(BINS) *.o client clienttest
+	rm -f *.dSYM $(BINS) *.o client clienttest forktest
