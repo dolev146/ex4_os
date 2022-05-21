@@ -100,10 +100,11 @@ int main(void)
         send(clientSocket, "size", 4, 0);
         recv(clientSocket, buffer, 1024, 0);
         printf("PARENT size %s\n", buffer);
-        assert(buffer[0] == '2');
-        assert(buffer[1] == '0');
-        assert(buffer[2] == '0');
-        assert(buffer[3] == '0');
+        
+        assert(buffer[6] == '2');
+        assert(buffer[7] == '0');
+        assert(buffer[8] == '0');
+        assert(buffer[9] == '0');
     }
     return 0;
 }

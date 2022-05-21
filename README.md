@@ -56,6 +56,7 @@ and in a diffrent terminal
   ./client
 ```
 
+then send PUSH POP TOP to the server and use the server.
 
 
 ## Running Tests
@@ -114,7 +115,25 @@ open it and follow the instruction , we check that no bytes are lost with valgri
  
  ![image](https://user-images.githubusercontent.com/62290677/165367469-bcc1290f-8205-4904-bc53-0431cdbc6162.png)
  
+press ctrl+c to terminate the server terminal
 
+
+The second test will be testing the stack implementation for blocking
+
+
+```bash
+  make clean;make; ./server
+```
+
+and in a diffrent terminal run
+
+```bash
+  ./forktest
+```
+
+this test test PUSH of 1000 time from diffrent forks , so it checks that if diffrent proccesses send requests samultaniasly works also.
+
+then ctrl+c to terminate the server
 
 
 # JACOB-SORBER-multithreaded-server-all-parts
