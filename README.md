@@ -118,7 +118,7 @@ open it and follow the instruction , we check that no bytes are lost with valgri
 press ctrl+c to terminate the server terminal
 
 
-The second test will be testing the stack implementation for blocking
+The third test will be testing the stack implementation for blocking
 
 
 ```bash
