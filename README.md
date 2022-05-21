@@ -131,6 +131,9 @@ and in a diffrent terminal run
   ./forktest
 ```
 
+ ![image](https://user-images.githubusercontent.com/62290677/169656385-129141ed-55c8-4752-8f58-8e6df8330e24.png)
+
+ 
 this test test PUSH of 1000 time from diffrent forks , so it checks that if diffrent proccesses send requests samultaniasly works also.
 
 then ctrl+c to terminate the server
